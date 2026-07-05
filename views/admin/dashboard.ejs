@@ -1,0 +1,52 @@
+<%- include('../partials/header') %>
+
+<div class="page-title">Dashboard Admin</div>
+<div class="page-subtitle">Ringkasan aktivitas SportBook hari ini.</div>
+
+<div class="grid grid-4" style="margin-bottom: 26px;">
+  <div class="card stat-card">
+    <div class="stat-label">Total Lapangan</div>
+    <div class="stat-value"><%= totalFields %></div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Total Pengguna</div>
+    <div class="stat-value"><%= totalUsers %></div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Booking Pending</div>
+    <div class="stat-value" style="color:#d97706;"><%= pendingBookings %></div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Total Pendapatan</div>
+    <div class="stat-value" style="color:#16a34a;">Rp <%= totalRevenue.toLocaleString('id-ID') %></div>
+  </div>
+</div>
+
+<div class="section-header">
+  <h3 style="margin:0;">Booking Terbaru</h3>
+  <a href="/admin/bookings" class="btn btn-outline btn-sm">Lihat Semua →</a>
+</div>
+
+<% if (recentBookings.length === 0) { %>
+  <div class="card empty-state">Belum ada booking.</div>
+<% } else { %>
+  <table>
+    <thead>
+      <tr><th>User</th><th>Lapangan</th><th>Tanggal</th><th>Jam</th><th>Total</th><th>Status</th></tr>
+    </thead>
+    <tbody>
+      <% recentBookings.forEach(b => { %>
+        <tr>
+          <td><%= b.user_name %></td>
+          <td><%= b.field_name %></td>
+          <td><%= b.booking_date %></td>
+          <td><%= b.start_time %> - <%= b.end_time %></td>
+          <td>Rp <%= b.total_price.toLocaleString('id-ID') %></td>
+          <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('../partials/footer') %>

@@ -1,0 +1,44 @@
+<%- include('../partials/header') %>
+
+<div class="page-title">Halo, <%= currentUser.name %> 👋</div>
+<div class="page-subtitle">Selamat datang kembali di SportBook.</div>
+
+<div class="grid grid-3" style="margin-bottom: 26px;">
+  <div class="card stat-card">
+    <div class="stat-label">Total Booking Saya</div>
+    <div class="stat-value"><%= totalBookings %></div>
+  </div>
+  <div class="card stat-card">
+    <div class="stat-label">Lapangan Tersedia</div>
+    <div class="stat-value"><%= activeFieldsCount %></div>
+  </div>
+  <div class="card" style="display:flex; align-items:center; justify-content:center;">
+    <a href="/user/fields" class="btn btn-primary btn-block">+ Booking Lapangan Baru</a>
+  </div>
+</div>
+
+<div class="section-header">
+  <h3 style="margin:0;">Booking Terbaru Saya</h3>
+  <a href="/user/bookings" class="btn btn-outline btn-sm">Lihat Semua →</a>
+</div>
+
+<% if (myBookings.length === 0) { %>
+  <div class="card empty-state">Kamu belum pernah booking lapangan. <a href="/user/fields" style="color:#16a34a;font-weight:600;">Booking sekarang →</a></div>
+<% } else { %>
+  <table>
+    <thead><tr><th>Lapangan</th><th>Tanggal</th><th>Jam</th><th>Total</th><th>Status</th></tr></thead>
+    <tbody>
+      <% myBookings.forEach(b => { %>
+        <tr>
+          <td><%= b.field_name %> <small style="color:#94a3b8;">(<%= b.category %>)</small></td>
+          <td><%= b.booking_date %></td>
+          <td><%= b.start_time %> - <%= b.end_time %></td>
+          <td>Rp <%= b.total_price.toLocaleString('id-ID') %></td>
+          <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('../partials/footer') %>

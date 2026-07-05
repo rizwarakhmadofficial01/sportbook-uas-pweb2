@@ -1,0 +1,30 @@
+<%- include('../partials/header') %>
+
+<div class="page-title">Daftar Lapangan</div>
+<div class="page-subtitle">Pilih lapangan dan jadwalkan booking-mu.</div>
+
+<div class="filters">
+  <a href="/user/fields" class="<%= category === '' ? 'active' : '' %>">Semua</a>
+  <% categories.forEach(c => { %>
+    <a href="/user/fields?category=<%= c.category %>" class="<%= category === c.category ? 'active' : '' %>"><%= c.category %></a>
+  <% }) %>
+</div>
+
+<% if (fields.length === 0) { %>
+  <div class="card empty-state">Tidak ada lapangan pada kategori ini.</div>
+<% } else { %>
+  <div class="grid grid-3">
+    <% fields.forEach(f => { %>
+      <div class="card field-card">
+        <div class="field-img"><%= f.category %></div>
+        <span class="field-cat"><%= f.category %></span>
+        <div class="field-name"><%= f.name %></div>
+        <div class="field-desc"><%= f.description %></div>
+        <div class="field-price">Rp <%= f.price_per_hour.toLocaleString('id-ID') %> / jam</div>
+        <a href="/user/fields/<%= f.id %>/book" class="btn btn-primary btn-block">Booking Sekarang</a>
+      </div>
+    <% }) %>
+  </div>
+<% } %>
+
+<%- include('../partials/footer') %>

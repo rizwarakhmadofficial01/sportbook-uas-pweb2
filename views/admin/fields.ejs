@@ -1,0 +1,43 @@
+<%- include('../partials/header') %>
+
+<div class="section-header">
+  <div>
+    <div class="page-title">Kelola Lapangan</div>
+    <div class="page-subtitle" style="margin-bottom:0;">Tambah, ubah, atau hapus data lapangan olahraga.</div>
+  </div>
+  <a href="/admin/fields/new" class="btn btn-primary">+ Tambah Lapangan</a>
+</div>
+
+<% if (fields.length === 0) { %>
+  <div class="card empty-state">Belum ada data lapangan.</div>
+<% } else { %>
+  <table>
+    <thead>
+      <tr><th>Nama</th><th>Kategori</th><th>Harga/Jam</th><th>Status</th><th>Aksi</th></tr>
+    </thead>
+    <tbody>
+      <% fields.forEach(f => { %>
+        <tr>
+          <td><%= f.name %></td>
+          <td><%= f.category %></td>
+          <td>Rp <%= f.price_per_hour.toLocaleString('id-ID') %></td>
+          <td>
+            <% if (f.is_active) { %>
+              <span class="badge badge-completed">Aktif</span>
+            <% } else { %>
+              <span class="badge badge-cancelled">Nonaktif</span>
+            <% } %>
+          </td>
+          <td style="display:flex; gap:6px;">
+            <a href="/admin/fields/<%= f.id %>/edit" class="btn btn-outline btn-sm">Edit</a>
+            <form action="/admin/fields/<%= f.id %>?_method=DELETE" method="POST" onsubmit="return confirm('Hapus lapangan ini?');">
+              <button class="btn btn-danger btn-sm" type="submit">Hapus</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('../partials/footer') %>

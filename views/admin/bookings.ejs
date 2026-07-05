@@ -1,0 +1,47 @@
+<%- include('../partials/header') %>
+
+<div class="page-title">Kelola Booking</div>
+<div class="page-subtitle">Konfirmasi, tolak, atau perbarui status booking pengguna.</div>
+
+<div class="filters">
+  <a href="/admin/bookings" class="<%= statusFilter === '' ? 'active' : '' %>">Semua</a>
+  <a href="/admin/bookings?status=pending" class="<%= statusFilter === 'pending' ? 'active' : '' %>">Pending</a>
+  <a href="/admin/bookings?status=confirmed" class="<%= statusFilter === 'confirmed' ? 'active' : '' %>">Confirmed</a>
+  <a href="/admin/bookings?status=completed" class="<%= statusFilter === 'completed' ? 'active' : '' %>">Completed</a>
+  <a href="/admin/bookings?status=rejected" class="<%= statusFilter === 'rejected' ? 'active' : '' %>">Rejected</a>
+  <a href="/admin/bookings?status=cancelled" class="<%= statusFilter === 'cancelled' ? 'active' : '' %>">Cancelled</a>
+</div>
+
+<% if (bookings.length === 0) { %>
+  <div class="card empty-state">Tidak ada booking untuk filter ini.</div>
+<% } else { %>
+  <table>
+    <thead>
+      <tr><th>User</th><th>Lapangan</th><th>Tanggal</th><th>Jam</th><th>Total</th><th>Status</th><th>Aksi</th></tr>
+    </thead>
+    <tbody>
+      <% bookings.forEach(b => { %>
+        <tr>
+          <td><%= b.user_name %><br><small style="color:#94a3b8;"><%= b.user_email %></small></td>
+          <td><%= b.field_name %> <br><small style="color:#94a3b8;"><%= b.category %></small></td>
+          <td><%= b.booking_date %></td>
+          <td><%= b.start_time %> - <%= b.end_time %></td>
+          <td>Rp <%= b.total_price.toLocaleString('id-ID') %></td>
+          <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+          <td>
+            <form action="/admin/bookings/<%= b.id %>/status?_method=PUT" method="POST" style="display:flex; gap:6px;">
+              <select name="status" style="padding:5px 8px; font-size:0.78rem; border-radius:6px; border:1px solid #e2e8f0;">
+                <% ['pending','confirmed','rejected','cancelled','completed'].forEach(s => { %>
+                  <option value="<%= s %>" <%= b.status === s ? 'selected' : '' %>><%= s %></option>
+                <% }) %>
+              </select>
+              <button class="btn btn-primary btn-sm" type="submit">Update</button>
+            </form>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('../partials/footer') %>

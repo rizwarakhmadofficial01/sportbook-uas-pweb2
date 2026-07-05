@@ -1,0 +1,34 @@
+<%- include('../partials/header') %>
+
+<div class="page-title">Riwayat Booking Saya</div>
+<div class="page-subtitle">Semua booking yang pernah kamu buat.</div>
+
+<% if (bookings.length === 0) { %>
+  <div class="card empty-state">Belum ada riwayat booking. <a href="/user/fields" style="color:#16a34a;font-weight:600;">Booking sekarang →</a></div>
+<% } else { %>
+  <table>
+    <thead><tr><th>Lapangan</th><th>Tanggal</th><th>Jam</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
+    <tbody>
+      <% bookings.forEach(b => { %>
+        <tr>
+          <td><%= b.field_name %> <small style="color:#94a3b8;">(<%= b.category %>)</small></td>
+          <td><%= b.booking_date %></td>
+          <td><%= b.start_time %> - <%= b.end_time %></td>
+          <td>Rp <%= b.total_price.toLocaleString('id-ID') %></td>
+          <td><span class="badge badge-<%= b.status %>"><%= b.status %></span></td>
+          <td>
+            <% if (['pending','confirmed'].includes(b.status)) { %>
+              <form action="/user/bookings/<%= b.id %>/cancel?_method=PUT" method="POST" onsubmit="return confirm('Batalkan booking ini?');">
+                <button class="btn btn-danger btn-sm" type="submit">Batalkan</button>
+              </form>
+            <% } else { %>
+              <span style="color:#94a3b8; font-size:0.8rem;">-</span>
+            <% } %>
+          </td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+<% } %>
+
+<%- include('../partials/footer') %>

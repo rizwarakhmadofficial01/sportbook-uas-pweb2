@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - SportBook</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <div class="navbar">
+    <a href="/" class="brand">🏸 Sport<span class="dot">Book</span></a>
+    <nav>
+      <% if (currentUser) { %>
+        <% if (currentUser.role === 'admin') { %>
+          <a href="/admin/dashboard">Dashboard</a>
+          <a href="/admin/fields">Kelola Lapangan</a>
+          <a href="/admin/bookings">Kelola Booking</a>
+          <a href="/admin/users">Pengguna</a>
+        <% } else { %>
+          <a href="/user/dashboard">Dashboard</a>
+          <a href="/user/fields">Lapangan</a>
+          <a href="/user/bookings">Booking Saya</a>
+        <% } %>
+        <span class="user-badge"><%= currentUser.name %> · <%= currentUser.role %></span>
+        <form action="/logout" method="POST">
+          <button class="btn-logout" type="submit">Logout</button>
+        </form>
+      <% } %>
+    </nav>
+  </div>
+  <div class="container">
+    <% if (successMsg && successMsg.length) { %>
+      <div class="alert alert-success"><%= successMsg[0] %></div>
+    <% } %>
+    <% if (errorMsg && errorMsg.length) { %>
+      <div class="alert alert-error"><%= errorMsg[0] %></div>
+    <% } %>
